@@ -1,4 +1,4 @@
-@echo off
+rem @echo off
 SETLOCAL
 
 REM ==================================
@@ -24,10 +24,11 @@ SET "PROGRAMFILES_PATH=%ProgramFiles(x86)%"
 
 
 rem ====== Edit to suit your environment =========
+rem VCVERSION=141 works to use VS2017 tools with VS2019 installed
 SET VCVERSION=141
 SET PLATFORM_TOOLSET=v%VCVERSION%
 REM The Windows SDK version in use.
-SET WINDOWS_TARGET_PLATFORM_VERSION=10.0.17134.0
+SET WINDOWS_TARGET_PLATFORM_VERSION=10.0.18362.0
 
 REM Allow overriding MSSDKS_PATH from outside this script.
 IF "%MSSDKS_PATH%" == "" (
@@ -36,12 +37,12 @@ IF "%MSSDKS_PATH%" == "" (
 
 REM Allow overriding MSVC_PATH from outside this script.
 IF "%MSVC_PATH%" == "" (
-  SET "MSVC_PATH=%PROGRAMFILES_PATH%\Microsoft Visual Studio\2017\Community\VC"
+  SET "MSVC_PATH=%PROGRAMFILES_PATH%\Microsoft Visual Studio\2019\Community\VC"
 )
 
 REM Allow overriding BUILDTOOLS_PATH from outside this script.
 if "%BUILDTOOLS_PATH%" == "" (
-  SET "BUILDTOOLS_PATH=%PROGRAMFILES_PATH%\Microsoft Visual Studio\2017\BuildTools\VC"
+  SET "BUILDTOOLS_PATH=%PROGRAMFILES_PATH%\Microsoft Visual Studio\2019\BuildTools\VC"
 )
 
 REM Allow overriding CMAKEDIR from outside this script.
@@ -51,7 +52,7 @@ if "%CMAKEDIR%" == "" (
 
 REM Verify paths.
 IF EXIST "%MSVC_PATH%" (
-echo Using Visual Studio 2017 Community Edition to build.
+echo Using Visual Studio 2019 Community Edition to build.
 SET "BUILDTOOLS_PATH=%MSVC_PATH%"
 SET BUILDTOOLS_SCRIPT=Auxiliary\Build\vcvarsall.bat
 
@@ -270,6 +271,7 @@ if %MACHINE_X86% (
 ) else (
   call "%BUILDTOOLS_PATH%\%BUILDTOOLS_SCRIPT%" %COMPILER_X64%
 )
+if not %ERRORLEVEL% == 0 ( echo error %ERRORLEVEL% running "%BUILDTOOLS_PATH%\%BUILDTOOLS_SCRIPT%" && exit 1)
 
 REM The Visual C++ compiler (cl.exe) recognizes certain environment variables, specifically LIB, LIBPATH, PATH, and INCLUDE
 rem Use our directories as well. Needed for a number of dependencies to find zlib, sqlite and xiph headers, including Qt.
