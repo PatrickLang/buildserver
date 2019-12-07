@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |config|
+
+  config.vm.define "winbuild" do |winbuild|
+    winbuild.vm.box = "WindowsServer2019Docker-Jul19"
+    winbuild.vm.provider "hyperv" do |hv|
+      hv.vmname = "mixxx-winbuild"
+      hv.memory = 8192
+      hv.maxmemory = 8192
+      hv.cpus = 4
+      hv.linked_clone = true
+    end
+
+    winbuild.vm.synced_folder '.', '/vagrant', disabled: true
+    winbuild.vm.network "public_network", bridge: "Default Switch"
+    winbuild.vm.hostname = "mixxx-winbuild"
+
+    winbuild.vm.provision "shell", path: "install-chocolatey.ps1"
+    winbuild.vm.provision "shell", path: "install-perl.ps1"
+    # winbuild.vm.provision "shell", path: "install-cmake.ps1"
+    # winbuild.vm.provision "shell", path: "install-python-scons.ps1"
+    # winbuild.vm.provision "shell", path: "install-vs2019.ps1"
+    
+  end
+
+end
