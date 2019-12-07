@@ -28,6 +28,24 @@ Work needed:
 1. First, get the Windows Server 2019 trial ISO at: https://www.microsoft.com/evalcenter/evaluate-windows-server-2019, and save it in the iso/ folder
 1. Build `windows_2019_docker.json` using one of the included scripts as an example. You may need to update the ISO filename or SHA as Microsoft updates it every few months.
 
+**Temporary workaround - resize disk to >100 GB**
+
+On a Hyper-V host
+
+```powershell
+vagrant halt
+Resize-VHD '.\.vagrant\machines\winbuild\hyperv\Virtual Hard Disks\WindowsServer2019Docker.vhdx' -SizeBytes 120Gb
+vagrant up
+```
+
+In the VM
+
+```powershell
+Resize-Partition -DriveLetter c -Size (Get-Partition -DriveLetter c | Get-PartitionSupportedSize).SizeMax
+```
+
+Then back on the host, resume with `vagrant provision`
+
 ### Using it
 
 `vagrant provision` will install all the needed tools using the scripts included in this repo. Once it's provisioned, use `vagrant up` and `vagrant halt` to start & stop it cleanly. If it gets in a bad state `vagrant destroy` then `vagrant provision` again.
