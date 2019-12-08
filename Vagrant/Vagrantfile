@@ -3,7 +3,7 @@
 Vagrant.configure("2") do |config|
 
   config.vm.define "winbuild" do |winbuild|
-    winbuild.vm.box = "WindowsServer2019Docker-Jul19"
+    winbuild.vm.box = "WindowsServer2019"
     winbuild.vm.provider "hyperv" do |hv|
       hv.vmname = "mixxx-winbuild"
       hv.memory = 8192

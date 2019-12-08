@@ -26,7 +26,7 @@ Work needed:
 
 1. Clone https://github.com/StefanScherer/packer-windows
 1. First, get the Windows Server 2019 trial ISO at: https://www.microsoft.com/evalcenter/evaluate-windows-server-2019, and save it in the iso/ folder
-1. Build `windows_2019_docker.json` using one of the included scripts as an example. You may need to update the ISO filename or SHA as Microsoft updates it every few months.
+1. Build `windows_2019.json` using one of the included scripts as an example. You may need to update the ISO filename or SHA as Microsoft updates it every few months.
 
 **Temporary workaround - resize disk to >100 GB**
 
@@ -34,7 +34,7 @@ On a Hyper-V host
 
 ```powershell
 vagrant halt
-Resize-VHD '.\.vagrant\machines\winbuild\hyperv\Virtual Hard Disks\WindowsServer2019Docker.vhdx' -SizeBytes 120Gb
+Resize-VHD '.\.vagrant\machines\winbuild\hyperv\Virtual Hard Disks\WindowsServer2019.vhdx' -SizeBytes 120Gb
 vagrant up
 ```
 
