@@ -14,14 +14,16 @@ if ((Test-Path c:\vsinstall) -eq $false) {
     curl.exe -Lo vs_buildtools.exe https://aka.ms/vs/16/release/vs_buildtools.exe 
 
     # Install Build Tools excluding workloads and components with known issues.
-    Start-Process -NoNewWindow -Wait .\vs_buildtools.exe -Args `""--quiet --wait --norestart --nocache `
-        --installPath C:\BuildTools `
-        --all `
-        --add Microsoft.VisualStudio.Workload.VCTools `
-        --add Microsoft.VisualStudio.Component.VC.v141.x86.x64 `
-        --includeRecommended `
-        --remove Microsoft.VisualStudio.Component.Windows10SDK.10240 `
-        --remove Microsoft.VisualStudio.Component.Windows10SDK.10586 `
-        --remove Microsoft.VisualStudio.Component.Windows10SDK.14393 `
-        --remove Microsoft.VisualStudio.Component.Windows81SDK `""
+    $vsArgs =  "--quiet",  "--wait", "--norestart", "--nocache", `
+        "--installPath C:\BuildTools", `
+        "--all", `
+        "--add Microsoft.VisualStudio.Workload.VCTools", `
+        "--add Microsoft.VisualStudio.Component.VC.v141.x86.x64", `
+        "--includeRecommended", `
+        "--remove Microsoft.VisualStudio.Component.Windows10SDK.10240", `
+        "--remove Microsoft.VisualStudio.Component.Windows10SDK.10586", `
+        "--remove Microsoft.VisualStudio.Component.Windows10SDK.14393", `
+        "--remove Microsoft.VisualStudio.Component.Windows81SDK"
+    Write-Host $vsArgs
+    Start-Process -NoNewWindow -Wait .\vs_buildtools.exe -Args $vsArgs
 }
