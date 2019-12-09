@@ -42,7 +42,15 @@ IF "%MSVC_PATH%" == "" (
 
 REM Allow overriding BUILDTOOLS_PATH from outside this script.
 if "%BUILDTOOLS_PATH%" == "" (
-  SET "BUILDTOOLS_PATH=%PROGRAMFILES_PATH%\Microsoft Visual Studio\2019\BuildTools\VC"
+  if exist "c:\BuildTools\vc" (
+    SET "BUILDTOOLS_PATH=c:\BuildTools\vc"
+  ) else if exist "BUILDTOOLS_PATH=%PROGRAMFILES_PATH%\Microsoft Visual Studio\2019\BuildTools\VC" (
+    SET "BUILDTOOLS_PATH=%PROGRAMFILES_PATH%\Microsoft Visual Studio\2019\BuildTools\VC"
+  ) else (
+    echo Couldn't find Visual Studio C++ build tools.
+    exit 1
+  )
+  
 )
 
 REM Allow overriding CMAKEDIR from outside this script.
@@ -52,34 +60,34 @@ if "%CMAKEDIR%" == "" (
 
 REM Verify paths.
 IF EXIST "%MSVC_PATH%" (
-echo Using Visual Studio 2019 Community Edition to build.
-SET "BUILDTOOLS_PATH=%MSVC_PATH%"
-SET BUILDTOOLS_SCRIPT=Auxiliary\Build\vcvarsall.bat
+  echo Using Visual Studio 2019 Community Edition to build.
+  SET "BUILDTOOLS_PATH=%MSVC_PATH%"
+  SET BUILDTOOLS_SCRIPT=Auxiliary\Build\vcvarsall.bat
 
-REM Check whether we have a 64-bit compiler available.
-REM NOTE(rryan): Temporarily disabled because the build doesn't work with a 64-bit compiler.
-rem IF EXIST "%MSVC_PATH%\bin\amd64\cl.exe" (
-SET COMPILER_X86=amd64_x86
-SET COMPILER_X64=amd64
-rem ) ELSE (
-rem SET COMPILER_X86=x86
-rem SET COMPILER_X64=x86_amd64
-rem )
+  REM Check whether we have a 64-bit compiler available.
+  REM NOTE(rryan): Temporarily disabled because the build doesn't work with a 64-bit compiler.
+  rem IF EXIST "%MSVC_PATH%\bin\amd64\cl.exe" (
+  SET COMPILER_X86=amd64_x86
+  SET COMPILER_X64=amd64
+  rem ) ELSE (
+  rem SET COMPILER_X86=x86
+  rem SET COMPILER_X64=x86_amd64
+  rem )
 
 ) ELSE (
-IF EXIST "%BUILDTOOLS_PATH%" (
-echo Using Visual Studio 2017 Build Tools to build.
-SET BUILDTOOLS_SCRIPT=Auxiliary\Build\vcvarsall.bat
+  IF EXIST "%BUILDTOOLS_PATH%" (
+  echo Using Visual Studio 2017 Build Tools to build.
+  SET BUILDTOOLS_SCRIPT=Auxiliary\Build\vcvarsall.bat
 
-SET COMPILER_X86=amd64_x86
-SET COMPILER_X64=amd64
+  SET COMPILER_X86=amd64_x86
+  SET COMPILER_X64=amd64
 ) ELSE (
-echo.
-echo Could not find "%MSVC_PATH%" nor "%BUILDTOOLS_PATH%".
-echo Edit the build_environment.bat file and/or install the required software
-echo http://landinghub.visualstudio.com/visual-cpp-build-tools
-echo https://www.microsoft.com/en-us/download/details.aspx?id=8279
-exit /b 1
+  echo.
+  echo Could not find "%MSVC_PATH%" nor "%BUILDTOOLS_PATH%".
+  echo Edit the build_environment.bat file and/or install the required software
+  echo http://landinghub.visualstudio.com/visual-cpp-build-tools
+  echo https://www.microsoft.com/en-us/download/details.aspx?id=8279
+  exit /b 1
 )
 REM END EXIST BUILDTOOLS
 )
