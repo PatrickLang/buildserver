@@ -34,7 +34,7 @@ On a Hyper-V host
 
 ```powershell
 vagrant halt
-Resize-VHD '.\.vagrant\machines\winbuild\hyperv\Virtual Hard Disks\WindowsServer2019.vhdx' -SizeBytes 120Gb
+Resize-VHD '.\.vagrant\machines\winbuild\hyperv\Virtual Hard Disks\WindowsServer2019.vhdx' -SizeBytes 160Gb
 vagrant up
 ```
 
