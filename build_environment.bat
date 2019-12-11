@@ -163,11 +163,11 @@ if "%2" == "" (
 set JUMPIDX=
 set MACHINE_X86="%1" == "x86"
 
-if "%2" == "Release" (
+if /i "%2" equ "Release" (
   set CONFIG_RELEASE=1==1
   set CONFIG_FASTBUILD=0==1
 ) else (
-  if "%2" == "ReleaseFastbuild" (
+  if /i "%2" equ "ReleaseFastbuild" (
     set CONFIG_RELEASE=1==1
     set CONFIG_FASTBUILD=1==1
   ) else (
@@ -176,9 +176,9 @@ if "%2" == "Release" (
   )
 )
 
-if "%3" == "Dynamic" (
+if /i "%3" equ "Dynamic" (
 set DYNAMIC_LIBS="%3" == "Dynamic"
-if "%4" == "nuke" (
+if /i "%4" equ "nuke" (
 set DELETE_OLD="%4" == "nuke"
 ) else ( REM not nuke
 set DELETE_OLD="" == "nuke"
@@ -189,11 +189,11 @@ set JUMPIDX=%4
 REM END ELSE nuke
 ) else ( REM not Dynamic
 set DYNAMIC_LIBS="" == "Dynamic"
-if "%3" == "nuke" (
+if /i "%3" equ "nuke" (
 set DELETE_OLD="%3" == "nuke"
 ) else ( REM not nuke
 set DELETE_OLD="" == "nuke"
-if NOT "%3" == "" (
+if /i "%3" neq "" (
 set JUMPIDX=%3
 )
 )
