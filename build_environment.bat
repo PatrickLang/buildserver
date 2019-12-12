@@ -37,18 +37,21 @@ IF "%MSSDKS_PATH%" == "" (
 
 REM Allow overriding MSVC_PATH from outside this script.
 IF "%MSVC_PATH%" == "" (
-  SET "MSVC_PATH=%PROGRAMFILES_PATH%\Microsoft Visual Studio\2019\Community\VC"
+  for /f "usebackq tokens=*" %%i in (`vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set MSVC_PATH=%%i
+  if not exist "%MSVC_PATH"% (
+    echo Couldn't find Visual Studio. Exiting.
+    exit /b 1
+  )
+  SET "MSVC_PATH=%MSVC_PATH%\VC"
 )
 
 REM Allow overriding BUILDTOOLS_PATH from outside this script.
 if "%BUILDTOOLS_PATH%" == "" (
-  if exist "c:\BuildTools\vc" (
-    SET "BUILDTOOLS_PATH=c:\BuildTools\vc"
-  ) else if exist "BUILDTOOLS_PATH=%PROGRAMFILES_PATH%\Microsoft Visual Studio\2019\BuildTools\VC" (
-    SET "BUILDTOOLS_PATH=%PROGRAMFILES_PATH%\Microsoft Visual Studio\2019\BuildTools\VC"
+  if exist "%MSVC_PATH" (
+    SET "BUILDTOOLS_PATH=%MSVC_PATH%"
   ) else (
     echo Couldn't find Visual Studio C++ build tools.
-    exit 1
+    exit /b 1
   )
   
 )
