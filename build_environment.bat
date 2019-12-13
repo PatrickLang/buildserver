@@ -390,7 +390,8 @@ ENDLOCAL
 
 REM TODO: conclusively figure out which version. VS2019 with vs2017 C++ includes these versions:
 REM 14.16.27012 14.20.27508 14.21.27702 14.22.27821 14.23.27820 14.24.28127
-SET MSVC_REDIST_VERSION=14.24.28127
+REM 14.20.27508 appears to be the latest one with Microsoft.VC141.CRT
+SET MSVC_REDIST_VERSION=14.20.27508
 REM Copy runtime installers for release builds and debug runtime DLLs for debug builds.
 %XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\%MSVC_REDIST_VERSION%\vc_redist.x64.exe" %ROOT_DIR%
 %XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\%MSVC_REDIST_VERSION%\vc_redist.x86.exe" %ROOT_DIR%
