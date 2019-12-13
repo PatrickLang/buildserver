@@ -388,18 +388,20 @@ build_qtkeychain.bat) DO (
 )
 ENDLOCAL
 
-
+REM TODO: conclusively figure out which version. VS2019 with vs2017 C++ includes these versions:
+REM 14.16.27012 14.20.27508 14.21.27702 14.22.27821 14.23.27820 14.24.28127
+SET MSVC_REDIST_VERSION=14.24.28127
 REM Copy runtime installers for release builds and debug runtime DLLs for debug builds.
-%XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\14.15.26706\vc_redist.x64.exe" %ROOT_DIR%
-%XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\14.15.26706\vc_redist.x86.exe" %ROOT_DIR%
+%XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\%MSVC_REDIST_VERSION%\vc_redist.x64.exe" %ROOT_DIR%
+%XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\%MSVC_REDIST_VERSION%\vc_redist.x86.exe" %ROOT_DIR%
 if %CONFIG_RELEASE% (
-  %XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\14.15.26706\%MACHINE_X%\Microsoft.VC%VCVERSION%.CRT\*.dll" %LIB_DIR%
-  %XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\14.15.26706\%MACHINE_X%\Microsoft.VC%VCVERSION%.CXXAMP\*.dll" %LIB_DIR%
-  %XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\14.15.26706\%MACHINE_X%\Microsoft.VC%VCVERSION%.OpenMP\*.dll" %LIB_DIR%
+  %XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\%MSVC_REDIST_VERSION%\%MACHINE_X%\Microsoft.VC%VCVERSION%.CRT\*.dll" %LIB_DIR%
+  %XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\%MSVC_REDIST_VERSION%\%MACHINE_X%\Microsoft.VC%VCVERSION%.CXXAMP\*.dll" %LIB_DIR%
+  %XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\%MSVC_REDIST_VERSION%\%MACHINE_X%\Microsoft.VC%VCVERSION%.OpenMP\*.dll" %LIB_DIR%
 ) else (
-  %XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\14.15.26706\debug_nonredist\%MACHINE_X%\Microsoft.VC%VCVERSION%.DebugCRT\*.dll" %LIB_DIR%
-  %XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\14.15.26706\debug_nonredist\%MACHINE_X%\Microsoft.VC%VCVERSION%.DebugCXXAMP\*.dll" %LIB_DIR%
-  %XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\14.15.26706\debug_nonredist\%MACHINE_X%\Microsoft.VC%VCVERSION%.DebugOpenMP\*.dll" %LIB_DIR%
+  %XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\%MSVC_REDIST_VERSION%\debug_nonredist\%MACHINE_X%\Microsoft.VC%VCVERSION%.DebugCRT\*.dll" %LIB_DIR%
+  %XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\%MSVC_REDIST_VERSION%\debug_nonredist\%MACHINE_X%\Microsoft.VC%VCVERSION%.DebugCXXAMP\*.dll" %LIB_DIR%
+  %XCOPY% "%BUILDTOOLS_PATH%\Redist\MSVC\%MSVC_REDIST_VERSION%\debug_nonredist\%MACHINE_X%\Microsoft.VC%VCVERSION%.DebugOpenMP\*.dll" %LIB_DIR%
 )
 echo.
 echo.
