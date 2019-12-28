@@ -1,8 +1,10 @@
 
 # Used for dealing with multiple VS install locations & versions in build_environment.bat
-choco install vswhere
+choco install -y vswhere
 
-if (-Not (Test-Path -Path (vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath))) {
+$vsPath = (vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath)
+
+if (-Not $vsPath -Or -Not (Test-Path -Path $vsPath)) {
     Write-Host "Missing Visual Studio, so installing it"
     if ((Get-PSDrive C).Free -lt 90Gb) {
         Write-Error "Not enough free space to install Visual Studio tools"
@@ -21,7 +23,6 @@ if (-Not (Test-Path -Path (vswhere -latest -products * -requires Microsoft.Visua
 
         # Install Build Tools excluding workloads and components with known issues.
         $vsArgs =  "--quiet",  "--wait", "--norestart", "--nocache", `
-            "--installPath C:\BuildTools", `
             "--all", `
             "--add Microsoft.VisualStudio.Workload.VCTools", `
             "--add Microsoft.VisualStudio.Component.VC.v141.x86.x64", `
